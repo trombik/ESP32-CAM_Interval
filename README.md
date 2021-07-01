@@ -85,6 +85,18 @@ and leaves it in some undefined state. This is probably not according to spec
 To properly power down the camera a modification must be made to the PCB. For
 details see doc/power_consumption.md.
 
+Generating video file from the pictures
+---------------------------------------
+
+You need to install [`ffmpeg`](https://ffmpeg.org/).
+
+To generate video file from the pictures, mount the SD card on your machine,
+run:
+
+```console
+ffmpeg -framerate 5 -pattern_type glob -i "/mnt/timelapse0017/*.jpg" output.mp4
+```
+
 Troubleshooting
 ---------------
 If the red LED is flashing two short pulses every 2 seconds, this means an fatal
