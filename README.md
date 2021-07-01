@@ -21,6 +21,7 @@ Compilation
 Use [`platformio`](https://platformio.org/) to build.
 
 ```console
+sh gen_html_content.sh
 pio run
 ```
 
@@ -32,13 +33,54 @@ pio run -t upload --upload-port /dev/cuaU0
 
 `/dev/cuaU0` should be replaced with the path to serial port on your machine.
 
-The config.h file offers some compile time customizations.
-
-Before compiling the html_content.cpp file needs to be generated. Do this by
-executing the gen_html_content.sh script.
-
 The tzinfo.json file can be updated with the tool from
 https://github.com/pgurenko/tzinfo. But this is normally not necessary.
+
+## Build flags
+
+Use `src_build_flags` in `platformio.ini` to set build flags.
+
+### `WITH_SLEEP`
+
+Enable deep-sleep in between pictures if defined.
+
+### `WITH_FLASH`
+
+Enable Flash LED support if defined.
+
+### `WITH_CAM_PWDN`
+
+Enable Camera Power down support if defined. Note that this requires a
+modification on the AI-Thinker ESP32-CAM boards.
+
+### `WITH_EVIL_CAM_PWR_SHUTDOWN`
+
+Shutdown camera low voltage regulators.  This shuts down the camera 1.2 and
+2.8 Volt regulators in sleep state. This brings down the current
+consumption to about 4 mA. However it leaves the camera in a half powered
+state since the 3.3 Volt is not shut down. Doing this is probably not
+according to spec. Using the `WITH_CAM_PWDN` build flag instead is suggested.
+
+### `WITH_SD_4BIT`
+
+Enable 4-BIT bus signalling to SD card(if supported by card) if defined. With
+this flag:
+
+* The bus width is 4 bit (slightly faster access) instead of 1 bit
+* The microSD card will use the `GPIO4`, `GPIO12`, `GPIO13` data lines (you
+  cannot use the pins for other purpose)
+* The onboard LED flashlight blinks when accessing SD card
+
+The flag should not be defined in most cases.
+
+### `WITH_SETUP_MODE_BUTTON`
+
+Require Button to enter Set-up mode Normally Set-up mode is automatically
+entered upon first boot. However if the camera is in a privacy sensitive
+location this also mean that if the camera reboots accidentally, it will start
+an open Wi-Fi AP through which you can see the camera images. In these cases
+you can use a button/switch between `GPIO12` and ground. Only if the button is
+pressed upon first boot the camera will go into set-up mode.
 
 Picture Names
 -------------
@@ -51,9 +93,10 @@ time is not set, the clock will start at UNIX epoch, i.e. 01-01-1970 00:00:00.
 
 Set-up mode
 -----------
-When the camera is powered up it will go into set-up mode. In this mode the
-camera has an open Wi-Fi access point and a web server. Connect to the access
-point and go to http://camera.local to configure the camera and enable it.
+When the camera is powered up it will go into set-up mode, or time is not
+set. In this mode the camera has an open Wi-Fi access point and a web server.
+Connect to the access point and go to http://camera.local to configure the
+camera and enable it.
 
 Upon opening the set-up mode web site the camera's clock is automatically
 synchronized to the browsers clock.
@@ -82,6 +125,18 @@ and leaves it in some undefined state. This is probably not according to spec
 
 To properly power down the camera a modification must be made to the PCB. For
 details see doc/power_consumption.md.
+
+Generating video file from the pictures
+---------------------------------------
+
+You need to install [`ffmpeg`](https://ffmpeg.org/).
+
+To generate video file from the pictures, mount the SD card on your machine,
+run:
+
+```console
+ffmpeg -framerate 5 -pattern_type glob -i "/mnt/timelapse0017/*.jpg" output.mp4
+```
 
 Troubleshooting
 ---------------

@@ -96,6 +96,7 @@ void setup()
 
   Serial.begin(115200);
   Serial.println();
+  print_capability();
 
   // Configure red LED
   pinMode(LED_GPIO_NUM, OUTPUT);
@@ -149,16 +150,23 @@ void setup()
   setenv("TZ", cfg.getTzInfo(), 1);
   tzset();
 
-  // Get current Time
+  // Get current time and if time is not set, run setup
   {
     time_t now = time(NULL);
+    struct tm tm_now;
     Serial.printf("Current time: %s", ctime(&now));
+    Serial.println();
+    localtime_r(&now, &tm_now);
+    if (tm_now.tm_year + 1900 < 2021) {
+      setup_mode = true;
+    }
   }
 
   // Inititialize next capture time
   if (is_wakeup) {
     next_capture_time = nv_data.next_capture_time;
     Serial.printf("Next image at: %s", ctime(&next_capture_time.tv_sec));
+    Serial.println();
   } else {
     (void) gettimeofday(&next_capture_time, NULL);
   }
@@ -218,10 +226,13 @@ static bool init_sdcard()
     .max_files = 1,
   };
   sdmmc_card_t *card;
-  
-#ifndef WITH_SD_4BIT
-  // Force host to 1-bit mode
+
+#ifdef WITH_SD_4BIT
+  host.flags = SDMMC_HOST_FLAG_4BIT;
+  slot_config.width = 4;
+#else
   host.flags = SDMMC_HOST_FLAG_1BIT;
+  slot_config.width = 1;
 #endif
 
   Serial.print("Mounting SD card... ");
@@ -355,11 +366,13 @@ static void save_photo()
     if (ret != 1) {
       Serial.println("Failed\nError while writing to file");
     } else {
-      Serial.printf("Saved as %s\n", filename);
+      Serial.printf("Saved as %s", filename);
+      Serial.println();
     }
     fclose(file);
   } else {
-    Serial.printf("Failed\nCould not open file: %s\n", filename);
+    Serial.printf("Failed\nCould not open file: %s", filename);
+    Serial.println();
   }
 
   camera_fb_return(fb);
@@ -428,4 +441,28 @@ void loop()
     }
   }
 #endif // WITH_SLEEP
+}
+
+void print_capability()
+{
+    Serial.print("Compiled options: ");
+#ifdef WITH_FLASH
+    Serial.print("WITH_FLASH ");
+#endif
+#ifdef WITH_SLEEP
+    Serial.print("WITH_SLEEP ");
+#endif
+#ifdef WITH_CAM_PWDN
+    Serial.print("WITH_CAM_PWDN ");
+#endif
+#ifdef WITH_EVIL_CAM_PWR_SHUTDOWN
+    Serial.print("WITH_EVIL_CAM_PWR_SHUTDOWN ");
+#endif
+#ifdef WITH_SD_4BIT
+    Serial.print("WITH_SD_4BIT ");
+#endif
+#ifdef WITH_SETUP_MODE_BUTTON
+    Serial.print("WITH_SETUP_MODE_BUTTON ");
+#endif
+    Serial.println();
 }
