@@ -21,6 +21,7 @@ Compilation
 Use [`platformio`](https://platformio.org/) to build.
 
 ```console
+sh gen_html_content.sh
 pio run
 ```
 
