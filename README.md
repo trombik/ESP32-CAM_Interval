@@ -1,17 +1,36 @@
 ESP32-CAM Interval
 ==================
 
-__Status Update:__ Since I bought another stock camera that matches my needs I
-no longer actively develop this project.
-
+__Status Update:__ Forked from [dimhoff/ESP32-CAM_Interval](https://github.com/dimhoff/ESP32-CAM_Interval).
 
 This firmware turns a ESP32-CAM module into a low power time-lapse camera.
 Taking pictures at a set interval, and storing them to SD card. In between
 captures the device will go into deep sleep mode to save battery power.
 
+About the fork
+--------------
+
+The fork is intended to:
+
+* follow updates in dependency
+* modify the firmware to my needs
+
 Compilation
 -----------
-Use the Arduino IDE with ESP32 support to compile the firmware.
+
+Use [`platformio`](https://platformio.org/) to build.
+
+```console
+pio run
+```
+
+To upload, run:
+
+```console
+pio run -t upload --upload-port /dev/cuaU0
+```
+
+`/dev/cuaU0` should be replaced with the path to serial port on your machine.
 
 The config.h file offers some compile time customizations.
 
