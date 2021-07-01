@@ -226,10 +226,13 @@ static bool init_sdcard()
     .max_files = 1,
   };
   sdmmc_card_t *card;
-  
-#ifndef WITH_SD_4BIT
-  // Force host to 1-bit mode
+
+#ifdef WITH_SD_4BIT
+  host.flags = SDMMC_HOST_FLAG_4BIT;
+  slot_config.width = 4;
+#else
   host.flags = SDMMC_HOST_FLAG_1BIT;
+  slot_config.width = 1;
 #endif
 
   Serial.print("Mounting SD card... ");
@@ -363,11 +366,13 @@ static void save_photo()
     if (ret != 1) {
       Serial.println("Failed\nError while writing to file");
     } else {
-      Serial.printf("Saved as %s\n", filename);
+      Serial.printf("Saved as %s", filename);
+      Serial.println();
     }
     fclose(file);
   } else {
-    Serial.printf("Failed\nCould not open file: %s\n", filename);
+    Serial.printf("Failed\nCould not open file: %s", filename);
+    Serial.println();
   }
 
   camera_fb_return(fb);
