@@ -61,4 +61,12 @@
 # error "PWDN_GPIO_NUM can not be equal to CAM_PWR_GPIO_NUM"
 #endif
 
+#if !defined(CAM_Interval_SSID)
+# error "CAM_Interval_SSID must be defined"
+#endif
+
+#if !defined(CAM_Interval_PASSWORD)
+# error "CAM_Interval_PASSWORD must be defined"
+#endif
+
 #endif // __IO_DEFS_H__
