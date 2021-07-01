@@ -41,18 +41,28 @@ static bool parse_bool(const char *in, bool *out);
 Configuration cfg;
 
 static const PROGMEM char * frame_size_strings[] = {
+"96x96",
 "160x120",
-"128x160",
 "176x144",
 "240x176",
+"240x240",
 "320x240",
 "400x296",
+"480x320",
 "640x480",
 "800x600",
 "1024x768",
+"1280x720",
 "1280x1024",
 "1600x1200",
-"2048x1536"
+"1920x1080",
+"720x1280",
+"864x1536",
+"2048x1536",
+"2560x1440",
+"2560x1600",
+"1080x1920",
+"2560x1920"
 };
 static const PROGMEM char * wb_mode_strings[] = {
 "auto",
@@ -200,9 +210,6 @@ int Configuration::config_set(const char *key, const char *value)
     if (strcasecmp(value, "QQVGA") == 0 ||
         strcasecmp(value, "160x120") == 0) {
       m_frame_size = FRAMESIZE_QQVGA;
-    } else if (strcasecmp(value, "QQVGA2") == 0 ||
-        strcasecmp(value, "128x160") == 0) {
-      m_frame_size = FRAMESIZE_QQVGA2;
     } else if (strcasecmp(value, "QCIF") == 0 ||
         strcasecmp(value, "176x144") == 0) {
       m_frame_size = FRAMESIZE_QCIF;
