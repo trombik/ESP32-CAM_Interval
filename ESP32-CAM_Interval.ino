@@ -150,16 +150,23 @@ void setup()
   setenv("TZ", cfg.getTzInfo(), 1);
   tzset();
 
-  // Get current Time
+  // Get current time and if time is not set, run setup
   {
     time_t now = time(NULL);
+    struct tm tm_now;
     Serial.printf("Current time: %s", ctime(&now));
+    Serial.println();
+    localtime_r(&now, &tm_now);
+    if (tm_now.tm_year + 1900 < 2021) {
+      setup_mode = true;
+    }
   }
 
   // Inititialize next capture time
   if (is_wakeup) {
     next_capture_time = nv_data.next_capture_time;
     Serial.printf("Next image at: %s", ctime(&next_capture_time.tv_sec));
+    Serial.println();
   } else {
     (void) gettimeofday(&next_capture_time, NULL);
   }
@@ -452,5 +459,5 @@ void print_capability()
 #ifdef WITH_SETUP_MODE_BUTTON
     Serial.print("WITH_SETUP_MODE_BUTTON ");
 #endif
-    Serial.print("\n");
+    Serial.println();
 }
