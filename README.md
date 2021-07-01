@@ -69,6 +69,7 @@ this flag:
 * The bus width is 4 bit (slightly faster access) instead of 1 bit
 * The microSD card will use the `GPIO4`, `GPIO12`, `GPIO13` data lines (you
   cannot use the pins for other purpose)
+* The onboard LED flashlight blinks when accessing SD card
 
 The flag should not be defined in most cases.
 
