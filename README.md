@@ -51,9 +51,10 @@ time is not set, the clock will start at UNIX epoch, i.e. 01-01-1970 00:00:00.
 
 Set-up mode
 -----------
-When the camera is powered up it will go into set-up mode. In this mode the
-camera has an open Wi-Fi access point and a web server. Connect to the access
-point and go to http://camera.local to configure the camera and enable it.
+When the camera is powered up it will go into set-up mode, or time is not
+set. In this mode the camera has an open Wi-Fi access point and a web server.
+Connect to the access point and go to http://camera.local to configure the
+camera and enable it.
 
 Upon opening the set-up mode web site the camera's clock is automatically
 synchronized to the browsers clock.
