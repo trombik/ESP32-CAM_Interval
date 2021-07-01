@@ -96,6 +96,7 @@ void setup()
 
   Serial.begin(115200);
   Serial.println();
+  print_capability();
 
   // Configure red LED
   pinMode(LED_GPIO_NUM, OUTPUT);
@@ -428,4 +429,28 @@ void loop()
     }
   }
 #endif // WITH_SLEEP
+}
+
+void print_capability()
+{
+    Serial.print("Compiled options: ");
+#ifdef WITH_FLASH
+    Serial.print("WITH_FLASH ");
+#endif
+#ifdef WITH_SLEEP
+    Serial.print("WITH_SLEEP ");
+#endif
+#ifdef WITH_CAM_PWDN
+    Serial.print("WITH_CAM_PWDN ");
+#endif
+#ifdef WITH_EVIL_CAM_PWR_SHUTDOWN
+    Serial.print("WITH_EVIL_CAM_PWR_SHUTDOWN ");
+#endif
+#ifdef WITH_SD_4BIT
+    Serial.print("WITH_SD_4BIT ");
+#endif
+#ifdef WITH_SETUP_MODE_BUTTON
+    Serial.print("WITH_SETUP_MODE_BUTTON ");
+#endif
+    Serial.print("\n");
 }
