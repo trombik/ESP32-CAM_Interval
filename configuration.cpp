@@ -143,7 +143,8 @@ int Configuration::config_set(const char *key, const char *value)
 {
   char *endp = NULL;
 
-  Serial.printf(" - '%s' => '%s'\n", key, value);
+  Serial.printf(" - '%s' => '%s'", key, value);
+  Serial.println();
 
   if (strcasecmp(key, "interval") == 0) {
     m_capture_interval = strtoul(value, &endp, 10);
