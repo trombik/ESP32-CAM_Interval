@@ -48,6 +48,18 @@ Optionally, you may create `platformio_user.ini` to override defaults.
 src_build_flags = -DWITH_SLEEP -DWITH_SD_4BIT
 ```
 
+### `CAM_Interval_SSID`
+
+The SSID of the access point when in setup mode.
+
+See [`platformio.ini`](platformio.ini) for the default.
+
+### `CAM_Interval_PASSWORD`
+
+The Password of the access point when in setup mode.
+
+See [`platformio.ini`](platformio.ini) for the default.
+
 ### `WITH_SLEEP`
 
 Enable deep-sleep in between pictures if defined.

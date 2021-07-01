@@ -43,6 +43,8 @@ static const IPAddress SERVER_IP(192, 168, 1, 1);
 static const IPAddress GATEWAY_IP(0, 0, 0, 0);
 static const IPAddress SERVER_NETMASK(255, 255, 255, 0);
 static const int WIFI_DEFAULT_CHANNEL = 6;
+static const char password[] = CAM_Interval_PASSWORD;
+static const char ssid[] = CAM_Interval_SSID;
 
 DNSServer dnsServer;
 WebServer webServer(80);
@@ -147,9 +149,10 @@ bool setup_mode_init()
 {
   // Start Wi-FI
   Serial.println("Setting up Wi-Fi AP");
+  Serial.printf("SSID: %s", ssid);
   WiFi.mode(WIFI_AP);
   WiFi.softAPConfig(SERVER_IP, GATEWAY_IP, SERVER_NETMASK);
-  WiFi.softAP("ESP32-interval Set-up mode", "", WIFI_DEFAULT_CHANNEL, false, 1);
+  WiFi.softAP(ssid, password, WIFI_DEFAULT_CHANNEL, false, 1);
 
   // if DNSServer is started with "*" for domain name, it will reply with
   // provided IP to all DNS request
