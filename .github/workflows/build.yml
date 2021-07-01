@@ -36,4 +36,5 @@ jobs:
 
       - name: Build
         run: |
+          sh gen_html_content.sh
           pio run -e ${{ matrix.pio_board }} -v
