@@ -40,6 +40,14 @@ https://github.com/pgurenko/tzinfo. But this is normally not necessary.
 
 Use `src_build_flags` in `platformio.ini` to set build flags.
 
+Optionally, you may create `platformio_user.ini` to override defaults.
+
+```ini
+; platformio_user.ini
+[common]
+src_build_flags = -DWITH_SLEEP -DWITH_SD_4BIT
+```
+
 ### `WITH_SLEEP`
 
 Enable deep-sleep in between pictures if defined.
