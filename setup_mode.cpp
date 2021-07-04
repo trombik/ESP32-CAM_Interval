@@ -150,6 +150,7 @@ bool setup_mode_init()
   // Start Wi-FI
   Serial.println("Setting up Wi-Fi AP");
   Serial.printf("SSID: %s", ssid);
+  Serial.println("");
   WiFi.mode(WIFI_AP);
   WiFi.softAPConfig(SERVER_IP, GATEWAY_IP, SERVER_NETMASK);
   WiFi.softAP(ssid, password, WIFI_DEFAULT_CHANNEL, false, 1);
